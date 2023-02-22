@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Portfolio </title>
+    <title>My Portfolio | Diezon_74</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <!-- bootstrap icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
@@ -148,23 +148,32 @@
         </div>
         <div class="row justify-content-center">
           <div class="col-md-6">
-            <form>
+            <div class="alert alert-success alert-dismissible fade show my-alert d-none" role="alert">
+              <strong>Terimakasih !</strong> Pesan Kamu sudah terkirim .
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <form name="dzn-contact-form">
               <div class="mb-3">
                 <label for="name" class="form-label">Masukan Nama</label>
-                <input type="text" class="form-control" id="name" aria-describedby="name">
-                <div id="emailHelp" class="form-text"></div>
+                <input type="text" class="form-control" id="name" aria-describedby="name" name="nama">
+                <div id="emailHelp" class="form-text" ></div>
               </div>
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                <div id="emailHelp" class="form-text">Email Anda tidak akan pernah Saya bagikan kepada orang lain.</div>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
+                <div id="emailHelp" class="form-text" >Email Anda tidak akan pernah Saya bagikan kepada orang lain.</div>
               </div>
               <div class="mb-3 ">
                 <label for="pesan" class="form-label">Tulis Pesan anda di sini</label>
-                <textarea class="form-control" id="pesan" rows="3"></textarea>
+                <textarea class="form-control" id="pesan" rows="3" name="pesan"></textarea>
                 <div id="pesanHelp" class="form-text">Tinggalkan pesan apapun Buat Saya bisa itu komentar,pertanyan,saran/kritik <i class="bi bi-emoji-smile"></i></div>
               </div>
-             <button type="submit" class="btn btn-success">Kirim <i class="bi bi-send"></i></button>
+             <button type="submit" class="btn btn-success btn-kirim">Kirim <i class="bi bi-send "></i></button>
+
+             <button type="submit" class="btn btn-success btn-loading d-none">Kirim 
+              <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div></button>
             </form>
           </div>
         </div>
@@ -181,5 +190,33 @@
 
     <!--bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <!-- form gogle sheet -->
+    <script>
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbwvJD8RiNxUDF8WzmI3QFJXsCYQpI-Q0lj7c2m8I-fSfSWcBpBEeVYyDLMqthAYQoYa/exec'
+      const form = document.forms['dzn-contact-form']
+      const btnKirim = document.querySelector('.btn-kirim');
+      const btnLoading = document.querySelector('.btn-loading');
+      const myAlert = document.querySelector('.my-alert');
+
+      form.addEventListener('submit', e => {
+        e.preventDefault()
+        // ketika tombal kirim diklik 
+        // tombol loading muncul ,tombol kirm hilang
+        btnLoading.classList.toggle('d-none');
+        btnKirim.classList.toggle('d-none');
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+          .then(response =>{ 
+              // tombol loading hilang ,tombol kirm muncul
+            btnLoading.classList.toggle('d-none');
+            btnKirim.classList.toggle('d-none');
+            // menampilkan alert
+            myAlert.classList.toggle('d-none');
+            //reset form
+            form.reset();
+            console.log('Success!', response)})
+          .catch(error => console.error('Error!', error.message))
+      })
+    </script>
   </body>
 </html>
